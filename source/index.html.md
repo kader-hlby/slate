@@ -1,239 +1,289 @@
 ---
 title: API Reference
 
-language_tabs: # must be one of https://git.io/vQNgJ
-  - shell
-  - ruby
-  - python
-  - javascript
-
-toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
+#language_tabs: # must be one of https://git.io/vQNgJ
 
 search: true
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Knolskape API! You can use our API to access simulations API endpoints.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+# Services
 
-# Authentication
+## Get All Services names with Simulation names
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+> Example Response:
 
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
+      "serviceName": "bybhtml",
+      "simulationName": "BYB V2"
   },
   {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+      "serviceName": "cq-v2",
+      "simulationName": "ChangeQuest v2"
+  },
+  {
+      "serviceName": "ileadhtml",
+      "simulationName": "iLead V2"
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+This endpoint retrieves all Services names with Simulation names.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api-test.knolskape.com/ct/simulations`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter  | Description
+---------  | -----------
+platformId | -----------
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
 
-## Get a Specific Kitten
+# Candidates
 
-```ruby
-require 'kittn'
+## Register User
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
+> Example Request:
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "projectId": 125,
+  "users": [
+    {
+      "id":1,
+      "email": "accendouser1@mailinator.com",
+      "name":"accendouser name",
+      "redirectUrl":"http://kaliber.com/redirect",
+      "callbackUrl":"http://kaliber.com/callback?token=f8XvlPhHpBcYVg7Pv9jBXVDDejNLyO12EgqWTomwh3th4tpYFyiORforoeqz"
+    }
+  ],
+  "services": [
+    "ilead",
+    "cq-v2"
+  ]
 }
 ```
 
-This endpoint retrieves a specific kitten.
+> Example Response:
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+```json
+[
+  {
+    "service": "ilead",
+    "users": [
+      {
+        "email": "accendouser1@mailinator.com",
+        "link": "https://accounts.knolskape.com/ct-simulation?custom_token={custom_token1}",
+        "token": "{custom_token1}"
+      }
+    ]
+  },
+  {
+    "service": "cq-v2",
+    "users": [
+      {
+        "email": "accendouser1@mailinator.com",
+        "link": "https://accounts.knolskape.com/ct-simulation?custom_token={custom_token2}",
+        "token": "{custom_token2}"
+      }
+    ]
+  }
+]
+```
+
+This endpoint registers users to a list of simulations.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST https://api-test.knolskape.com/ct/simulations/register`
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parameter  | Description
+---------  | -----------
+platformId | -----------
 
-## Delete a Specific Kitten
+### Response Parameters
 
-```ruby
-require 'kittn'
+Parameter   | Description
+---------   | -----------
+projectId   | -----------
+users       | -----------
+services    | -----------
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+## Get Simulation Status and Scores By User id
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> Example Response:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+    "metrics": [
+        {
+            "key": "status",
+            "name": "Status"
+        },
+        {
+            "key": "rank",
+            "name": "Rank"
+        },
+        {
+            "key": "noOfConversion",
+            "name": "No. of Conversions"
+        },
+        {
+            "key": "aggregateScore",
+            "name": "Weighted Average Adoption"
+        },
+        {
+            "key": "percentile",
+            "name": "Average Adoption (percentile)"
+        },
+        {
+            "key": "avgAdoption",
+            "name": "Average Adoption"
+        },
+        {
+            "key": "progress",
+            "name": "Progress (in days)"
+        },
+        {
+            "key": "timeLeft",
+            "name": "Time Remaining (90 mins)"
+        }
+    ],
+    "metricsData": [
+        {
+            "tokenId": "BnUny897Ywna3ezJzef8RuhxaNbUboxD",
+            "status": "COMPLETED",
+            "timeLeft": "88:21",
+            "avgAdoption": "24.33",
+            "progress": "14",
+            "noOfConversion": "1",
+            "aggregateScore": "20.94",
+            "percentile": "7.51",
+            "competency": "7.51",
+            "rank": 1,
+            "startedAt": 1505128287,
+            "completedAt": 1605128302
+        }
+    ]
 }
 ```
 
-This endpoint deletes a specific kitten.
+### HTTP Request
+
+`GET https://api-test.knolskape.com/ct/simulation/{{simulation}}/metrics/project/{{projectIid}}/user/{{userId}}?platformId=2`
+
+This endpoint retrieves Simulation Status and Scores for a specific user.
+
+### Query Parameters
+
+Parameter  | Description
+---------  | -----------
+platformId | -----------
+
+### Response Parameters
+
+Parameter   | Description
+---------   | -----------
+simulation  | -----------
+projectIid  | -----------
+userId      | -----------
+## Get Simulation Status and Scores By Project id
+
+> Example Response:
+
+```json
+{
+    "metrics": [
+        {
+            "key": "status",
+            "name": "Status"
+        },
+        {
+            "key": "rank",
+            "name": "Rank"
+        },
+        {
+            "key": "noOfConversion",
+            "name": "No. of Conversions"
+        },
+        {
+            "key": "aggregateScore",
+            "name": "Weighted Average Adoption"
+        },
+        {
+            "key": "percentile",
+            "name": "Average Adoption (percentile)"
+        },
+        {
+            "key": "avgAdoption",
+            "name": "Average Adoption"
+        },
+        {
+            "key": "progress",
+            "name": "Progress (in days)"
+        },
+        {
+            "key": "timeLeft",
+            "name": "Time Remaining (90 mins)"
+        }
+    ],
+    "metricsData": [
+        {
+            "tokenId": "oBk4PdXHcbGXWcKuNCMnFWCUTTpPnxoA",
+            "status": "STARTED",
+            "startedAt": null,
+            "completedAt": null
+        },
+        {
+            "tokenId": "ZywFBkgDmQtaS8uxB9KaWfUGZcodzCEq",
+            "status": "NOT_STARTED",
+            "startedAt": null,
+            "completedAt": null
+        },
+        {
+            "tokenId": "BnUny897Ywna3ezJzef8RuhxaNbUboxD",
+            "status": "STARTED",
+            "timeLeft": "88:21",
+            "avgAdoption": "24.33",
+            "progress": "14",
+            "noOfConversion": "1",
+            "aggregateScore": "20.94",
+            "percentile": "7.51",
+            "competency": "7.51",
+            "rank": 1,
+            "startedAt": 1505128287,
+            "completedAt": null
+        },
+    ]
+}
+```
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`GET https://api-test.knolskape.com/ct/simulation/{{simulation}}/metrics/project/{{projectIid}}?platformId=2`
 
-### URL Parameters
+This endpoint retrieves Simulation Status and Scores for all Users in a specific Project. 
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+### Query Parameters
+
+Parameter  | Description
+---------  | -----------
+platformId | -----------
+
+### Response Parameters
+
+Parameter   | Description
+---------   | -----------
+simulation  | -----------
+projectIid  | -----------
 
