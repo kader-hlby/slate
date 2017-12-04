@@ -11,9 +11,9 @@ search: true
 Welcome to the Knolskape API! You can use our API to access simulations API endpoints.
 
 
-# Services
+# Simulation
 
-## Get All Services names with Simulation names
+## Get All Simulation
 
 > Example Response:
 
@@ -34,7 +34,7 @@ Welcome to the Knolskape API! You can use our API to access simulations API endp
 ]
 ```
 
-This endpoint retrieves all Services names with Simulation names.
+This gives list of simulations enabled for accendo platform.
 
 ### HTTP Request
 
@@ -47,9 +47,9 @@ Parameter  | Description
 platformId | -----------
 
 
-# Candidates
+# Users
 
-## Register User
+## Register Users
 
 > Example Request:
 
@@ -60,7 +60,8 @@ platformId | -----------
     {
       "id":1,
       "email": "accendouser1@mailinator.com",
-      "name":"accendouser name",
+      "firstName": "User1",
+      "lastName": "Accendo",
       "redirectUrl":"http://kaliber.com/redirect",
       "callbackUrl":"http://kaliber.com/callback?token=f8XvlPhHpBcYVg7Pv9jBXVDDejNLyO12EgqWTomwh3th4tpYFyiORforoeqz"
     }
@@ -99,7 +100,7 @@ platformId | -----------
 ]
 ```
 
-This endpoint registers users to a list of simulations.
+This returns the list of links with custom token in it. These links can be clicked by the users directly to access the simulations.So if a project has M tools(services) and N users given in payload, it will return M*N links in response json. The services inside payload is array of service names choosen for this given project.
 
 ### HTTP Request
 
@@ -111,15 +112,32 @@ Parameter  | Description
 ---------  | -----------
 platformId | -----------
 
-### Response Parameters
+### Request Parameters
 
 Parameter   | Description
 ---------   | -----------
-projectId   | -----------
-users       | -----------
-services    | -----------
+projectId   | project id from accendo side.
+users       | list of users to be registered. (refer to the table below)
+services    | list of services names to register the users to, You can get the service names of simulation in Get All Services api.
 
-## Get Simulation Status and Scores By User id
+Users       | Description
+---------   | -----------
+userId      | user id from accendo side.
+email       | user email.
+firstName   | user first name.
+lastName    | user last name.
+redirectUrl | redirect url for redirecting back to accendo after completion or the browser session ends.
+callbackUrl | callback url for knolskape to call after user **complete** a simulation. (refer to the Callback Parameters table below)
+
+### Callback Parameters
+callback is a post call to the callback url.
+
+Parameter       | Description
+---------       | -----------
+serviceName     | service name that user completed.
+Scores          | list of scores.
+
+## Get Simulation Status and Scores - User level
 
 > Example Response:
 
@@ -180,7 +198,7 @@ services    | -----------
 
 ### HTTP Request
 
-`GET https://api-test.knolskape.com/ct/simulation/{{simulation}}/metrics/project/{{projectIid}}/user/{{userId}}?platformId=2`
+`GET https://api-test.knolskape.com/ct/simulation/{{serviceName}}/metrics/project/{{projectIid}}/user/{{userId}}?platformId=2`
 
 This endpoint retrieves Simulation Status and Scores for a specific user.
 
@@ -190,14 +208,14 @@ Parameter  | Description
 ---------  | -----------
 platformId | -----------
 
-### Response Parameters
+### URI Parameters
 
 Parameter   | Description
 ---------   | -----------
-simulation  | -----------
-projectIid  | -----------
-userId      | -----------
-## Get Simulation Status and Scores By Project id
+serviceName | service name, You can get the service names of simulation in Get All Services api.
+projectIid  | project id from accendo side.
+userId      | user id from accendo side.
+## Get Simulation Status and Scores - Project level
 
 > Example Response:
 
@@ -270,7 +288,7 @@ userId      | -----------
 
 ### HTTP Request
 
-`GET https://api-test.knolskape.com/ct/simulation/{{simulation}}/metrics/project/{{projectIid}}?platformId=2`
+`GET https://api-test.knolskape.com/ct/simulation/{{serviceName}}/metrics/project/{{projectIid}}?platformId=2`
 
 This endpoint retrieves Simulation Status and Scores for all Users in a specific Project. 
 
@@ -280,10 +298,10 @@ Parameter  | Description
 ---------  | -----------
 platformId | -----------
 
-### Response Parameters
+### URI Parameters
 
 Parameter   | Description
 ---------   | -----------
-simulation  | -----------
-projectIid  | -----------
+serviceName | service name, You can get the service names of simulation in Get All Services api.
+projectIid  | project id from accendo side.
 
